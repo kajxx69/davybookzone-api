@@ -217,13 +217,6 @@ const seedDatabase = async () => {
       }
     });
 
-    console.log('✅ Base de données initialisée avec succès!');
-    console.log('\n📋 Comptes créés:');
-    console.log(`👤 Admin: ${admin.email} / ${process.env.ADMIN_PASSWORD || 'admin123'}`);
-    console.log(`👤 Utilisateur: user@example.com / password`);
-    console.log(`👤 Utilisateur: marie@example.com / password`);
-    console.log(`👤 Utilisateur: pierre@example.com / password`);
-
     process.exit(0);
   } catch (error) {
     console.error('❌ Erreur lors de l\'initialisation:', error);

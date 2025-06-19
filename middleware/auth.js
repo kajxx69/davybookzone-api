@@ -19,33 +19,36 @@ export const protect = async (req, res, next) => {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select('-password');
+      const user = await User.findById(decoded.id).select('-password');
       
-      if (!req.user) {
+      if (!user) {
         return res.status(401).json({
           success: false,
           message: 'Utilisateur non trouvé'
         });
       }
 
-      if (!req.user.isActive) {
+      if (!user.isActive) {
         return res.status(401).json({
           success: false,
           message: 'Compte désactivé'
         });
       }
 
+      req.user = user;
       next();
     } catch (error) {
+      console.error('Erreur de vérification du token:', error);
       return res.status(401).json({
         success: false,
-        message: 'Token invalide'
+        message: 'Token invalide ou expiré'
       });
     }
   } catch (error) {
-    res.status(500).json({
+    console.error('Erreur dans le middleware d\'authentification:', error);
+    return res.status(500).json({
       success: false,
-      message: 'Erreur serveur'
+      message: 'Erreur serveur lors de l\'authentification'
     });
   }
 };
@@ -53,6 +56,13 @@ export const protect = async (req, res, next) => {
 // Autoriser seulement les admins
 export const authorize = (...roles) => {
   return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Utilisateur non authentifié'
+      });
+    }
+
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,

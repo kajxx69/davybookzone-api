@@ -12,7 +12,8 @@ import {
   markMessageAsRead,
   replyToMessage,
   getSettings,
-  updateSettings
+  updateSettings,
+  getAllPurchases
 } from '../controllers/adminController.js';
 import { protect, authorize } from '../middleware/auth.js';
 
@@ -73,6 +74,9 @@ router.put('/messages/:id/toggle-read', async (req, res) => {
     res.status(500).json({ success: false, message: 'Erreur serveur' });
   }
 });
+
+// Gestion des achats
+router.get('/purchases', getAllPurchases);
 
 // Paramètres
 router.get('/settings', getSettings);

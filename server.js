@@ -12,6 +12,7 @@ import authRoutes from './routes/auth.js';
 import bookRoutes from './routes/books.js';
 import messageRoutes from './routes/messages.js';
 import adminRoutes from './routes/admin.js';
+import purchaseRoutes from './routes/purchases.js';
 
 // Configuration
 dotenv.config();
@@ -91,6 +92,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/purchases', purchaseRoutes);
 
 // Route de santé
 app.get('/api/health', (req, res) => {

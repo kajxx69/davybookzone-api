@@ -3,6 +3,7 @@ import Book from '../models/Book.js';
 import Message from '../models/Message.js';
 import Settings from '../models/Settings.js';
 import { sendResponseEmail } from '../utils/email.js';
+import Purchase from '../models/Purchase.js';
 
 // @desc    Obtenir les statistiques du dashboard
 // @route   GET /api/admin/stats
@@ -407,7 +408,7 @@ export const replyToMessage = async (req, res) => {
         message.content
       );
     } catch (emailError) {
-      console.error('Erreur lors de l’envoi de l’email de réponse :', emailError);
+      console.error("Erreur lors de l'envoi de l'email de réponse :", emailError);
       // On continue quand même
     }
 
@@ -419,7 +420,7 @@ export const replyToMessage = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Erreur lors de l\'envoi de la réponse',
+      message: "Erreur lors de l'envoi de la réponse",
       error: error.message
     });
   }
@@ -475,6 +476,29 @@ export const updateSettings = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Erreur lors de la mise à jour des paramètres',
+      error: error.message
+    });
+  }
+};
+
+// @desc    Obtenir tous les achats
+// @route   GET /api/admin/purchases
+// @access  Private (Admin)
+export const getAllPurchases = async (req, res) => {
+  try {
+    const purchases = await Purchase.find()
+      .populate('user_id', 'firstName lastName email')
+      .populate('book_id', 'title author price')
+      .sort({ purchased_at: -1 });
+
+    res.json({
+      success: true,
+      data: purchases
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération des achats',
       error: error.message
     });
   }
