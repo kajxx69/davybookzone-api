@@ -12,8 +12,8 @@ async function initializeCinetPayTransaction(purchase, res) {
             amount: purchase.price,
             currency: 'XOF',
             description: 'Achat du livre ID : ' + purchase.book_id,
-            return_url: `${process.env.APP_URL || 'https://davybookzone.onrender.com'}/purchase/verify/${purchase.transaction_id}`,
-            notify_url: `${process.env.APP_URL || 'https://davybookzone.onrender.com'}/api/purchases/${purchase.transaction_id}/notify`,
+            return_url: `${process.env.APP_URL || 'http://localhost:5173'}/purchase/verify/${purchase.transaction_id}`,
+            notify_url: `${process.env.APP_URL || 'http://localhost:5173'}/api/purchases/${purchase.transaction_id}/notify`,
             channels: 'ALL',
             // Informations du client
             customer_name: purchase.customer_info.name,
